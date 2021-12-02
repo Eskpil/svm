@@ -4,10 +4,11 @@
 #define STACK_CAP 8192
 
 typedef enum {
-    NO_ERR,
-    ERR_STACK_OVERFLOW,
-    ERR_STACK_UNDERFLOW,
-} Err;
+    NO_TRAP,
+    TRAP_STACK_OVERFLOW,
+    TRAP_STACK_UNDERFLOW,
+    TRAP_DIV_ZERO,
+} Trap;
 
 typedef int64_t Word; 
 
@@ -15,6 +16,8 @@ typedef enum {
     INST_PUSH,
     INST_ADD,
     INST_SUB,
+    INST_DIV,
+    INST_MUL,
 } Inst_Type;
 
 typedef struct {
@@ -28,9 +31,9 @@ typedef struct {
     int ip;
 } Svm;
 
-Err svm_execute_inst(Svm *svm, Inst inst)  {
+Trap svm_execute_inst(Svm *svm, Inst inst)  {
     if (svm->stack_size >= STACK_CAP)   {
-        return ERR_STACK_OVERFLOW; 
+        return TRAP_STACK_OVERFLOW; 
     }; 
     switch (inst.type)  {
         case INST_PUSH: {
@@ -39,7 +42,7 @@ Err svm_execute_inst(Svm *svm, Inst inst)  {
         } break;
         case INST_ADD: {
             if (svm->stack_size < 2) {
-                return ERR_STACK_UNDERFLOW;
+                return TRAP_STACK_UNDERFLOW;
             }
             
             svm->stack[svm->stack_size - 2] += svm->stack[svm->stack_size - 1];
@@ -48,16 +51,34 @@ Err svm_execute_inst(Svm *svm, Inst inst)  {
         } break;
         case INST_SUB: {
             if (svm->stack_size < 2) {
-                return ERR_STACK_UNDERFLOW;
+                return TRAP_STACK_UNDERFLOW;
             } 
 
             svm->stack[svm->stack_size - 2] -= svm->stack[svm->stack_size - 1];
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
+        case INST_MUL: {
+            if (svm->stack_size < 2) {
+                return TRAP_STACK_UNDERFLOW;
+            }               
+
+            svm->stack[svm->stack_size -2] *= svm->stack[svm->stack_size -1];
+            svm->stack_size -= 1;
+            svm->ip += 1;
+        } break;
+        case INST_DIV: {
+            if (svm->stack_size < 2) {
+                return TRAP_STACK_UNDERFLOW;
+            }               
+
+            svm->stack[svm->stack_size -2] /= svm->stack[svm->stack_size -1];
+            svm->stack_size -= 1;
+            svm->ip += 1;
+        } break;
     };
 
-    return NO_ERR;
+    return NO_TRAP;
 }
 
 Inst svm_inst_push(Word operand) {
@@ -66,6 +87,24 @@ Inst svm_inst_push(Word operand) {
         .operand = operand,
     };
 }
+
+
+Inst svm_inst_mul() {
+    return (Inst) {
+        .type = INST_MUL,
+        .operand = 0 
+    };
+}
+
+
+Inst svm_inst_div() {
+    return (Inst) {
+        .type = INST_DIV,
+        .operand = 0 
+    };
+}
+
+
 
 Inst svm_inst_add() {
     return (Inst) {
@@ -103,7 +142,14 @@ int main(void) {
     svm_dump(&svm);
     svm_execute_inst(&svm, svm_inst_sub());
     svm_dump(&svm);
-    
+    svm_execute_inst(&svm, svm_inst_push(2));
+    svm_dump(&svm);
+    svm_execute_inst(&svm, svm_inst_mul());
+    svm_dump(&svm);
+    svm_execute_inst(&svm, svm_inst_push(3));
+    svm_dump(&svm);
+    svm_execute_inst(&svm, svm_inst_div());
+    svm_dump(&svm);
     return 0;
 }
 
