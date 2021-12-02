@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #define STACK_CAP 8192
+#define PROGRAM_CAP 65565
 
 typedef enum {
     NO_TRAP,
@@ -81,44 +83,12 @@ Trap svm_execute_inst(Svm *svm, Inst inst)  {
     return NO_TRAP;
 }
 
-Inst svm_inst_push(Word operand) {
-    return (Inst) {
-        .type = INST_PUSH,
-        .operand = operand,
-    };
-}
+#define SVM_MAKE_PUSH(value) ((Inst) { .type = INST_PUSH, .operand = (value) })
+#define SVM_MAKE_ADD() ((Inst) { .type = INST_ADD })
+#define SVM_MAKE_SUB() ((Inst) { .type = INST_SUB })
+#define SVM_MAKE_MUL() ((Inst) { .type = INST_MUL })
+#define SVM_MAKE_DIV() ((Inst) { .type = INST_DIV })
 
-
-Inst svm_inst_mul() {
-    return (Inst) {
-        .type = INST_MUL,
-        .operand = 0 
-    };
-}
-
-
-Inst svm_inst_div() {
-    return (Inst) {
-        .type = INST_DIV,
-        .operand = 0 
-    };
-}
-
-
-
-Inst svm_inst_add() {
-    return (Inst) {
-        .type = INST_ADD,
-        .operand = 0
-    };
-}
-
-Inst svm_inst_sub() {
-    return (Inst) {
-        .type = INST_SUB,
-        .operand = 0,
-    };
-}
 
 Inst svm_dump(Svm *svm) {
     printf("stack: \n");
@@ -131,25 +101,49 @@ Inst svm_dump(Svm *svm) {
     }
 }
 
+#define ARRAY_SIZE(xs) (sizeof(xs) / ((sizeof(xs)[0])))
+
+Inst program[] = {
+    SVM_MAKE_PUSH(420),
+    SVM_MAKE_PUSH(69),
+    SVM_MAKE_SUB(),
+    SVM_MAKE_PUSH(3),
+    SVM_MAKE_MUL(),
+    SVM_MAKE_PUSH(3),
+    SVM_MAKE_DIV(),
+};
+
+const char *trap_as_cstr(Trap trap) {
+    switch (trap) {
+        case NO_TRAP:
+           return "no_trap";
+        case TRAP_STACK_UNDERFLOW:
+           return "trap_stack_underflow"; 
+        case TRAP_STACK_OVERFLOW:
+           return "trap_stack_overflow";
+        case TRAP_DIV_ZERO:
+           return "trap_div_zero";
+        default:
+           return "unreachable_trap";
+           exit(1);
+    };
+};
+
 int main(void) {
 
     Svm svm = {0};
+
+    for (size_t i = 0; i < ARRAY_SIZE(program); ++i) {
+        Trap trap = svm_execute_inst(&svm, program[i]);
+        if (trap != NO_TRAP) {
+            fprintf(stderr, "Error: %s\n", trap_as_cstr(trap));
+            svm_dump(&svm);
+            exit(1);
+        }
+    };
+
+    svm_dump(&svm);
     
-    svm_dump(&svm);
-    svm_execute_inst(&svm, svm_inst_push(420));
-    svm_dump(&svm);
-    svm_execute_inst(&svm, svm_inst_push(69));
-    svm_dump(&svm);
-    svm_execute_inst(&svm, svm_inst_sub());
-    svm_dump(&svm);
-    svm_execute_inst(&svm, svm_inst_push(2));
-    svm_dump(&svm);
-    svm_execute_inst(&svm, svm_inst_mul());
-    svm_dump(&svm);
-    svm_execute_inst(&svm, svm_inst_push(3));
-    svm_dump(&svm);
-    svm_execute_inst(&svm, svm_inst_div());
-    svm_dump(&svm);
     return 0;
 }
 
