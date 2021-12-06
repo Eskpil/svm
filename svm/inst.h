@@ -35,13 +35,18 @@ typedef enum {
     
     INST_EQI, // Equals i64
     INST_NQI, // Not equals i64
+    INST_GTI,  // Greather than i64
+    INST_LTI,  // Less than i64
 
     INST_EQF, // Equals f64
     INST_NQF, // Not equals f64
+    INST_GTF,  // Greather than f64
+    INST_LTF,  // Less than f64
 
     INST_EQU, // Equals u64
     INST_NQU, // Not equals u64
-
+    INST_GTU,  // Greather than u64
+    INST_LTU,  // Less than u64
 } Inst_Type;
 
 typedef struct {

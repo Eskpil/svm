@@ -22,6 +22,7 @@ const char *inst_type_as_cstr(Inst_Type inst) {
             return "inst_muli";
         case INST_MODI:
             return "inst_modi";
+            
         case INST_ADDF: 
             return "inst_addf";
         case INST_SUBF:
@@ -30,6 +31,7 @@ const char *inst_type_as_cstr(Inst_Type inst) {
             return "inst_divf";
         case INST_MULF:
             return "inst_mulf";
+            
         case INST_ADDU: 
             return "inst_addu";
         case INST_SUBU:
@@ -52,14 +54,28 @@ const char *inst_type_as_cstr(Inst_Type inst) {
             return "inst_eqi";
         case INST_NQI:
             return "inst_nqi";
+        case INST_GTI:
+            return "inst_gti";
+        case INST_LTI:
+            return "inst_lti";
+
         case INST_EQF:
             return "inst_eqf";
         case INST_NQF:
             return "inst_nqf";
+        case INST_GTF:
+            return "inst_gtf";
+        case INST_LTF:
+            return "inst_ltf";
+            
         case INST_EQU:
             return "inst_equ";
         case INST_NQU:
             return "inst_nqu";
+        case INST_GTU:
+            return "inst_gtu";
+        case INST_LTU:
+            return "inst_ltu"; 
 
         default: 
             return "invalid_inst";
