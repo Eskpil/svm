@@ -4,11 +4,7 @@
 #include <stdio.h>
 
 int main(void) {
-
-    Svm svm = {0};
-
-    svm_execute_program(&svm, 500);
-    
+    printf("Hello, World\n");
     return 0;
 }
 

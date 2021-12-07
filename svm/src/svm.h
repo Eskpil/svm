@@ -14,9 +14,11 @@
 
 #define STACK_CAP 8192
 #define PROGRAM_CAP 65565
+#define EXTERNAL_NATIVE_CAP 65565
+#define NATIVE_NAME_CAP 255
+#define NATIVE_CAP 4096
 
 typedef uint64_t Inst_Addr;
-
 typedef enum {
     NO_TRAP,
     TRAP_STACK_OVERFLOW,
@@ -24,15 +26,29 @@ typedef enum {
     TRAP_DIV_ZERO,
 } Trap;
 
+typedef struct Svm Svm;
+
+typedef Trap (*Svm_Native)(Svm*);
 typedef struct {
+    char name[NATIVE_NAME_CAP];
+    uint64_t index;
+} External_Native;
+
+struct Svm {
     Word stack[STACK_CAP];
     uint64_t stack_size;
 
     Inst program[PROGRAM_CAP];
     Inst_Addr ip;
 
+    Svm_Native natives[NATIVE_CAP];
+    size_t natives_size;
+
+    External_Native exteranls[EXTERNAL_NATIVE_CAP];
+    size_t externals_size;
+
     bool halted;
-} Svm;
+};
 
 void svm_dump(FILE *file, const Svm *svm);
 void svm_execute_program(Svm *svm, int limit);
