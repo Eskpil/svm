@@ -7,15 +7,11 @@ if [ -z $1 ]; then
 else 
     if [ -d "build" ]; then
         rm -f build/$1
-        cd $1
-        ./run.sh
-        cd ..
+        gcc -Wall -pedantic -std=c11 -o build/$1 $1/*
         build/$1
     else 
         mkdir build
-        cd $1
-        ./run.sh
-        cd ..
+        gcc -Wall -pedantic -std=c11 -o build/$1 $1/*
         build/$1
     fi
 fi

@@ -1,32 +1,3 @@
 @include "os/syscall"
 @include "std/native"
 
-; first line is entrypoint therefor we jump to main
-
-jmp main
-
-; Should put Linus on stdout
-
-push_char: 
-    dup: 0
-    ret 
-
-main: 
-   native: 1 ; native call 1 also known as alloc
-   push: 76 ; push letter "L"
-   dup: 0 ; dup the pointer we got from native call one also known as alloc
-   native: 2 ; write to pointer
-   push: 105 ; write letter "i"
-   dup: 0 ; dup pointer
-   native: 2 ; write to pointer
-   push: 110 ; push letter "n"
-   dup: 0 ; dup pointer
-   native: 2 ; "write to pointer"
-   push: 117 ; push letter "u"
-   dup: 0 ; dup pointer
-   native: 2 ; write to pointer
-   push: 115 ; push letter "s"
-   dup: 0 ; dup pointer we got from alloc
-   native: 2 ; write to pointer
-   push: 1 ; out stream
-   syscall: 1 ; write syscall
