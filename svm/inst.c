@@ -3,8 +3,12 @@
 
 const char *inst_type_as_cstr(Inst_Type inst) {
     switch (inst) {
-        case INST_PUSH: 
-            return "inst_push";
+        case INST_ICONST:
+            return "inst_iconst";
+        case INST_FCONST:
+            return "inst_fconst";
+        case INST_UCONST:
+            return "inst_uconst";
         case INST_SWAP:
             return "inst_swap";
         case INST_POP:
@@ -12,70 +16,60 @@ const char *inst_type_as_cstr(Inst_Type inst) {
         case INST_DUP: 
             return "inst_dup";
 
-        case INST_ADDI: 
-            return "inst_addi";
-        case INST_SUBI:
-            return "inst_subi";
-        case INST_DIVI:
-            return "inst_divi";
-        case INST_MULI:
-            return "inst_muli";
-        case INST_MODI:
-            return "inst_modi";
+        case INST_IADD: 
+            return "inst_iadd";
+        case INST_ISUB:
+            return "inst_isub";
+        case INST_IDIV:
+            return "inst_idiv";
+        case INST_IMUL:
+            return "inst_imul";
+        case INST_IMOD:
+            return "inst_imod";
             
-        case INST_ADDF: 
-            return "inst_addf";
-        case INST_SUBF:
-            return "inst_subf";
-        case INST_DIVF:
-            return "inst_divf";
-        case INST_MULF:
-            return "inst_mulf";
+        case INST_FADD: 
+            return "inst_fadd";
+        case INST_FSUB:
+            return "inst_fsub";
+        case INST_FDIV:
+            return "inst_fdiv";
+        case INST_FMUL:
+            return "inst_fmul";
             
-        case INST_ADDU: 
-            return "inst_addu";
-        case INST_SUBU:
-            return "inst_subu";
-        case INST_DIVU:
-            return "inst_divu";
-        case INST_MULU:
-            return "inst_mulu";
-        case INST_MODU:
-            return "inst_modu";
+        case INST_UADD: 
+            return "inst_uadd";
+        case INST_USUB:
+            return "inst_usub";
+        case INST_UDIV:
+            return "inst_udiv";
+        case INST_UMUL:
+            return "inst_umul";
+        case INST_UMOD:
+            return "inst_umod";
 
         case INST_BRNZ:
             return "inst_brnz";
+        case INST_BRIZ:
+            return "inst_briz";
         case INST_JMP:
             return "inst_jmp";
         case INST_HALT: 
             return "inst_halt";
             
-        case INST_EQI:
-            return "inst_eqi";
-        case INST_NQI:
-            return "inst_nqi";
-        case INST_GTI:
-            return "inst_gti";
-        case INST_LTI:
-            return "inst_lti";
+        case INST_IEQ:
+            return "inst_ieq";
+        case INST_IGT:
+            return "inst_igt";
 
-        case INST_EQF:
-            return "inst_eqf";
-        case INST_NQF:
-            return "inst_nqf";
-        case INST_GTF:
-            return "inst_gtf";
-        case INST_LTF:
-            return "inst_ltf";
+        case INST_FEQ:
+            return "inst_feq";
+        case INST_FGT:
+            return "inst_fgt";
             
-        case INST_EQU:
-            return "inst_equ";
-        case INST_NQU:
-            return "inst_nqu";
-        case INST_GTU:
-            return "inst_gtu";
-        case INST_LTU:
-            return "inst_ltu"; 
+        case INST_UEQ:
+            return "inst_ueq";
+        case INST_UGT:
+            return "inst_ugt";
 
         default: 
             return "invalid_inst";

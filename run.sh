@@ -7,11 +7,11 @@ if [ -z $1 ]; then
 else 
     if [ -d "build" ]; then
         rm -f build/$1
-        gcc -Wall -pedantic -std=c11 -o build/$1 $1/*
+        gcc -Wall -pedantic -std=gnu11 -o build/$1 $1/*
         build/$1
     else 
         mkdir build
-        gcc -Wall -pedantic -std=c11 -o build/$1 $1/*
+        gcc -Wall -pedantic -std=gnu11 -o build/$1 $1/*
         build/$1
     fi
 fi

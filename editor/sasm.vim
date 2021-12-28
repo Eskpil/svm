@@ -3,10 +3,10 @@ if exists("b:current_syntax")
 endif
 
 " Keywords
-syntax keyword sasmKeywords push pop dup swap
-syntax keyword sasmKeywords addi subi divi muli modi
-syntax keyword sasmKeywords addf subf divf mulf
-syntax keyword sasmKeywords addu subu divu mulu modu
+syntax keyword sasmKeywords iconst uconst fconst pop dup swap
+syntax keyword sasmKeywords iadd isub idiv imul imod
+syntax keyword sasmKeywords fadd fsub fdiv fmul
+syntax keyword sasmKeywords uadd usub udiv umul umod
 syntax keyword sasmKeywords brnz halt jmp 
 syntax keyword sasmKeywords eqi nqi gti lti
 syntax keyword sasmKeywords eqf nqf gtf ltf

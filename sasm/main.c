@@ -1,6 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef enum {
+    PUSH,
+    ADD,
+    SUB,
+    INT, 
+} Sasm_Token_Type;
+
+typedef struct {
+    Sasm_Token_Type type;
+    char *value;
+} Sasm_Token;
+
 char *source_code = 
    "push 1\n"
    "push 1\n"
@@ -8,6 +20,9 @@ char *source_code =
    "push 2\n"
    "sub\n";
 
+void tokenize_line(char *source, size_t size) {
+    
+}
 
 void tokenize(char *source, size_t size) {
     while (size > 0) {

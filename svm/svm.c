@@ -53,10 +53,18 @@ Trap svm_execute_inst(Svm *svm)  {
     Inst inst = svm->program[svm->ip];
 
     switch (inst.type)  {
-        case INST_PUSH: {
-           svm->stack[svm->stack_size++] = inst.operand;                        
-           svm->ip += 1;
+        case INST_ICONST: {
+            svm->stack[svm->stack_size++].as_i64 = inst.operand.as_i64;                  
+            svm->ip += 1;
         } break;
+        case INST_FCONST: {
+            svm->stack[svm->stack_size++].as_f64 = inst.operand.as_f64;                  
+            svm->ip += 1;
+        } break;
+        case INST_UCONST: {
+            svm->stack[svm->stack_size++].as_u64 = inst.operand.as_u64;                  
+            svm->ip += 1;
+        } break;                 
         case INST_SWAP: {
             if (svm->stack_size < inst.operand.as_u64) {
                 return TRAP_STACK_UNDERFLOW;
@@ -88,7 +96,7 @@ Trap svm_execute_inst(Svm *svm)  {
            svm->ip += 1;
         } break;
 
-        case INST_ADDI: {
+        case INST_IADD: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }
@@ -97,7 +105,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_SUBI: {
+        case INST_ISUB: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             } 
@@ -106,7 +114,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_MULI: {
+        case INST_IMUL: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -115,7 +123,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_DIVI: {
+        case INST_IDIV: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -124,7 +132,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_MODI: {
+        case INST_IMOD: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }           
@@ -133,7 +141,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_ADDF: {
+        case INST_FADD: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }
@@ -142,7 +150,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_SUBF: {
+        case INST_FSUB: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             } 
@@ -151,7 +159,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_MULF: {
+        case INST_FMUL: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -160,7 +168,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_DIVF: {
+        case INST_FDIV: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -169,7 +177,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_ADDU: {
+        case INST_UADD: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }
@@ -178,7 +186,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_SUBU: {
+        case INST_USUB: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             } 
@@ -187,7 +195,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_MULU: {
+        case INST_UMUL: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -196,7 +204,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_DIVU: {
+        case INST_UDIV: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -205,7 +213,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->stack_size -= 1;
             svm->ip += 1;
         } break;
-        case INST_MODU: {
+        case INST_UMOD: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }           
@@ -235,7 +243,19 @@ Trap svm_execute_inst(Svm *svm)  {
 
             svm->stack_size -= 1;
         } break;
-        case INST_EQI: {
+        case INST_BRIZ: {
+            if (svm->stack_size < 1) {
+                return TRAP_STACK_UNDERFLOW;
+            };
+            
+            if (svm->stack[svm->stack_size - 1].as_u64 == 0) {
+                svm->ip = inst.operand.as_u64;
+            } else {
+                svm->ip += 1;
+            }
+        } break;
+
+        case INST_IEQ: {
             if (svm->stack_size < 2) {
                return TRAP_STACK_UNDERFLOW;
             };              
@@ -245,16 +265,7 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->ip++;
             svm->stack_size -= 1;
         } break;
-        case INST_NQI: {
-            if (svm->stack_size < 2) {
-                return TRAP_STACK_UNDERFLOW;
-            };              
-    
-            svm->stack[svm->stack_size - 2].as_u64 = svm->stack[svm->stack_size - 1].as_i64 != svm->stack[svm->stack_size - 2].as_i64;
-            svm->ip += 1;
-            svm->stack_size -= 1;
-        } break;
-        case INST_GTI: {
+        case INST_IGT: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -263,17 +274,8 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->ip += 1;
             svm->stack_size -= 1;
         } break;
-        case INST_LTI: {
-            if (svm->stack_size < 2) {
-                return TRAP_STACK_UNDERFLOW;
-            }               
-            
-            svm->stack[svm->stack_size - 2].as_u64 = svm->stack[svm->stack_size - 1].as_i64 <= svm->stack[svm->stack_size - 2].as_i64;
-            svm->ip += 1;
-            svm->stack_size -= 1;
-        } break;
-        
-        case INST_EQF: {
+
+        case INST_FEQ: {
             if (svm->stack_size < 2) {
                return TRAP_STACK_UNDERFLOW;
             };              
@@ -283,16 +285,8 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->ip++;
             svm->stack_size -= 1;
         } break;
-        case INST_NQF: {
-            if (svm->stack_size < 2) {
-                return TRAP_STACK_UNDERFLOW;
-            };              
-    
-            svm->stack[svm->stack_size - 2].as_u64 = svm->stack[svm->stack_size - 1].as_f64 != svm->stack[svm->stack_size - 2].as_f64;
-            svm->ip += 1;
-            svm->stack_size = svm->stack_size - 1;
-        } break;
-        case INST_GTF: {
+       
+        case INST_FGT: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
@@ -301,17 +295,8 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->ip += 1;
             svm->stack_size -= 1;
         } break;
-        case INST_LTF: {
-            if (svm->stack_size < 2) {
-                return TRAP_STACK_UNDERFLOW;
-            }               
-            
-            svm->stack[svm->stack_size - 2].as_u64 = svm->stack[svm->stack_size - 1].as_f64 <= svm->stack[svm->stack_size - 2].as_f64;
-            svm->ip += 1;
-            svm->stack_size -= 1;
-        } break;
-
-        case INST_EQU: {
+       
+        case INST_UEQ: {
             if (svm->stack_size < 2) {
                return TRAP_STACK_UNDERFLOW;
             };              
@@ -321,30 +306,12 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->ip++;
             svm->stack_size -= 1;
         } break;
-        case INST_NQU: {
-            if (svm->stack_size < 2) {
-                return TRAP_STACK_UNDERFLOW;
-            };              
-    
-            svm->stack[svm->stack_size - 2].as_u64 = svm->stack[svm->stack_size - 1].as_u64 != svm->stack[svm->stack_size - 2].as_u64;
-            svm->ip += 1;
-            svm->stack_size = svm->stack_size - 1;
-        } break;
-         case INST_GTU: {
+        case INST_UGT: {
             if (svm->stack_size < 2) {
                 return TRAP_STACK_UNDERFLOW;
             }               
 
             svm->stack[svm->stack_size - 2].as_u64 = svm->stack[svm->stack_size - 1].as_u64 >= svm->stack[svm->stack_size - 2].as_u64;
-            svm->ip += 1;
-            svm->stack_size -= 1;
-        } break;
-        case INST_LTU: {
-            if (svm->stack_size < 2) {
-                return TRAP_STACK_UNDERFLOW;
-            }               
-            
-            svm->stack[svm->stack_size - 2].as_u64 = svm->stack[svm->stack_size - 1].as_i64 <= svm->stack[svm->stack_size - 2].as_i64;
             svm->ip += 1;
             svm->stack_size -= 1;
         } break;

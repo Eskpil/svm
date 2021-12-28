@@ -4,49 +4,48 @@
 #include "./word.h"
 
 typedef enum {
+
+    INST_ICONST,
+    INST_FCONST,
+    INST_UCONST,
+
     // stack maniuplation
-    INST_PUSH,
     INST_SWAP,
     INST_POP,
     INST_DUP,
 
     // math operatinons
-    INST_ADDI, // int 64 
-    INST_SUBI, // int 64 
-    INST_DIVI, // int 64 
-    INST_MULI, // int 64 
-    INST_MODI, // int 64
+    INST_IADD, // int 64 
+    INST_ISUB, // int 64 
+    INST_IDIV, // int 64 
+    INST_IMUL, // int 64 
+    INST_IMOD, // int 64
     
-    INST_ADDF, // float 64
-    INST_SUBF, // float 64
-    INST_DIVF, // float 64
-    INST_MULF, // float 64
+    INST_FADD, // float 64
+    INST_FSUB, // float 64
+    INST_FDIV, // float 64
+    INST_FMUL, // float 64
     
-    INST_ADDU, // uint 64
-    INST_SUBU, // uint 64
-    INST_DIVU, // uint 64
-    INST_MULU, // uint 64
-    INST_MODU, // unit 64
+    INST_UADD, // uint 64
+    INST_USUB, // uint 64
+    INST_UDIV, // uint 64
+    INST_UMUL, // uint 64
+    INST_UMOD, // unit 64
 
     // if logic equailty etc
     INST_BRNZ, // Branch if not zero
+    INST_BRIZ,
     INST_JMP, // Jump
     INST_HALT, // Halt
     
-    INST_EQI, // Equals i64
-    INST_NQI, // Not equals i64
-    INST_GTI,  // Greather than i64
-    INST_LTI,  // Less than i64
+    INST_IEQ, // Equals i64
+    INST_IGT,  // Greather than i64
 
-    INST_EQF, // Equals f64
-    INST_NQF, // Not equals f64
-    INST_GTF,  // Greather than f64
-    INST_LTF,  // Less than f64
+    INST_FEQ, // Equals f64
+    INST_FGT,  // Greather than f64
 
-    INST_EQU, // Equals u64
-    INST_NQU, // Not equals u64
-    INST_GTU,  // Greather than u64
-    INST_LTU,  // Less than u64
+    INST_UEQ, // Equals u64
+    INST_UGT,  // Greather than u64
 } Inst_Type;
 
 typedef struct {
