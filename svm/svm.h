@@ -26,26 +26,20 @@ typedef enum {
     TRAP_DIV_ZERO,
 } Trap;
 
-typedef struct Svm Svm;
-
-struct Svm {
+typedef struct {
     Word stack[STACK_CAP];
     uint64_t stack_size;
 
     Inst program[PROGRAM_CAP];
+    uint64_t program_size;
     Inst_Addr ip;
 
     bool halted;
-};
+} Svm;
 
 void svm_dump(FILE *file, const Svm *svm);
 void svm_execute_program(Svm *svm, int limit);
 const char *trap_as_cstr(Trap trap);
 Trap svm_execute_inst(Svm *svm);
-
-typedef struct {
-  uint16_t version; 
-  uint16_t test;
-} Meta;
 
 #endif
