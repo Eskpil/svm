@@ -71,6 +71,19 @@ const char *inst_type_as_cstr(Inst_Type inst) {
         case INST_UGT:
             return "inst_ugt";
 
+        case SYSCALL1:
+            return "syscall1";
+        case SYSCALL2:
+            return "syscall2";
+        case SYSCALL3:
+            return "syscall3";
+        case SYSCALL4:
+            return "syscall4";
+        case SYSCALL5:
+            return "syscall5";
+        case SYSCALL6:
+            return "syscall6";
+
         default: 
             return "invalid_inst";
     }

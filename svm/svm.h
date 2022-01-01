@@ -2,6 +2,7 @@
 #define SVM_H_
 
 #include <stdint.h>
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -46,6 +46,13 @@ typedef enum {
 
     INST_UEQ, // Equals u64
     INST_UGT,  // Greather than u64
+
+    SYSCALL1,
+    SYSCALL2,
+    SYSCALL3,
+    SYSCALL4,
+    SYSCALL5,
+    SYSCALL6,
 } Inst_Type;
 
 typedef struct {

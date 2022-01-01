@@ -315,6 +315,25 @@ Trap svm_execute_inst(Svm *svm)  {
             svm->ip += 1;
             svm->stack_size -= 1;
         } break;
+
+        case SYSCALL1: {
+            assert(0 && "syscall1 is not implemented");
+        } break;
+        case SYSCALL2: {
+            assert(0 && "syscall2 is not implemented");
+        } break;        
+        case SYSCALL3: {
+            assert(0 && "syscall3 is not implemented");
+        } break;  
+        case SYSCALL4: {
+            assert(0 && "syscall4 is not implemented");
+        } break;
+        case SYSCALL5: {   
+            assert(0 && "syscall5 is not implemented");
+        } break;        
+        case SYSCALL6: {  
+            assert(0 && "syscall6 is not implemented");
+        } break; 
     };
 
     return NO_TRAP;
