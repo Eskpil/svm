@@ -1,6 +1,9 @@
 # Sapphire
 
 The actual programming language, utilizing the virtual machine.
+The compiler for sapphire will support both streaming the vm instructions directly
+to the virtual machine and compiling to a bytecode.
+
 
 ## Goals
 
