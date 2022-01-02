@@ -13,7 +13,12 @@ compile() {
         echo "[Info] A previous compiled version of $1 already exists, removing it"
         rm -f build/$1
     fi
-    $CC -I common/ -g common/*.c $CFLAGS -o build/$1 $1/*
+
+    echo "                                                              "
+    echo "--------------------------------------------------------------"
+    echo "                                                              "
+
+    $CC -I common/ -g common/*.c $CFLAGS -o build/$1 $1/*.c $1/*.h
 }
 
 if [ -z $1  ] || [ -z $2 ]; then
@@ -31,6 +36,10 @@ else
     if [ "$1" = "run" ]; then 
         compile $2
         echo "[Info] Compilation finished, running the $(echo $2) executable"
+        echo "                                                              "
+        echo "--------------------------------------------------------------"
+        echo "                                                              "
+
         build/$2
     else
         compile $2
