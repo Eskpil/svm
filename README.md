@@ -25,7 +25,7 @@ To run the virtual machine use
 Sapphire is the official programming language for the virtual machine. 
 Right now it is not implemented at all, but soon :).
 
-(Take a look)[/sapphire]
+[Take a look](/sapphire)
 
 ### ASM
 
