@@ -8,6 +8,5 @@ int main(void) {
     result();
     dlclose(object);
 
-    printf("Hello, World\n");
     return 0;
 }
