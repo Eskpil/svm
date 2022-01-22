@@ -3,7 +3,6 @@
 set -e
 
 CFLAGS="-Wall -Wextra -Wpedantic -std=gnu11"
-CC=gcc
 
 compile() {
     echo "[Info] Compiling $1"
@@ -22,7 +21,7 @@ compile() {
 }
 
 if [ -z $1  ] || [ -z $2 ]; then
-    echo "[Error] You must specify operation, exampke ./run.sh run svm"
+    echo "[Error] You must specify operation, example ./run.sh run svm"
     echo "[Error] You need to specify project, example ./run.sh run svm" 
 else 
     if [ -d "build" ]; then
